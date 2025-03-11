@@ -1,4 +1,8 @@
 import axios from 'axios';
+import express from 'express';
+
+const app = express();
+const port = 5000;
 
 const options = {
   method: 'GET',
@@ -13,3 +17,17 @@ axios
   .request(options)
   .then(res => console.log(res.data))
   .catch(err => console.error(err));
+  
+  app.get('/', (req, res) => {
+    axios
+      .request(options)
+      .then(response => {
+        res.json(response.data); 
+      })
+      .catch(error => {
+        res.status(500).json({ error: 'Error fetching data from Render API' });
+      });
+  });
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
